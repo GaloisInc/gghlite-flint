@@ -8,10 +8,7 @@ LDADD = \
     $(top_builddir)/oz/liboz.la \
     $(top_builddir)/gghlite/libgghlite.la \
     $(top_builddir)/dgsl/libdgsl.la \
-    -laesrand -lflint \
-    -L$(top_builddir)/mife/jsmn -ljsmn \
-    -L$(top_builddir)/mmap \
-    -lgmp -lmpfr -lm -lssl -lcrypto -lmmap
+    -lflint -lgmp -lmpfr -lm -lssl -lcrypto
 
 #LDFLAGS = -no-install
 
