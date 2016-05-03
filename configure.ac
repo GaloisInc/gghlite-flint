@@ -1,5 +1,8 @@
-AC_INIT([gghflint], [20140613])
+m4_define([version_current], [1])
+m4_define([version_revision], [0])
+m4_define([version_age], [0])
 
+AC_INIT([gghflint], [version_current.version_revision.version_age])
 AC_CONFIG_AUX_DIR([.])
 
 AC_CONFIG_SRCDIR([gghlite])
@@ -7,6 +10,15 @@ AC_CONFIG_SRCDIR([gghlite])
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE([subdir-objects])
+
+GGHLITE_VERSION_INFO=1:0:0
+AC_SUBST(GGHLITE_VERSION_INFO)
+OZ_VERSION_INFO=1:0:0
+AC_SUBST(OZ_VERSION_INFO)
+DGS_VERSION_INFO=1:0:0
+AC_SUBST(DGS_VERSION_INFO)
+DGSL_VERSION_INFO=1:0:0
+AC_SUBST(DGSL_VERSION_INFO)
 
 # support older automake versions
 m4_ifdef([AM_SILENT_RULES],
@@ -42,30 +54,19 @@ if test "x$enable_heuristics" = x"yes"; then
    AC_DEFINE(GGHLITE_HEURISTICS,1,[Define whether to enable performance improvements])
 fi
 
-AC_SEARCH_LIBS(aes_randinit,aesrand)
-if test "x$ac_cv_search_aes_randinit" = "xno"; then
-   AC_MSG_ERROR([libaesrand not found])
+AC_SEARCH_LIBS(mpz_urandomm_aes,aesrand)
+if test "x$ac_cv_search_mpz_urandomm_aes" = "xno"; then
+  AC_MSG_ERROR([libaesrand not found])
 fi
-AC_SEARCH_LIBS(clt_state_init,clt13)
-if test "x$ac_cv_search_clt_state_init" = "xno"; then
-   AC_MSG_ERROR([libclt13 not found])
+AC_SEARCH_LIBS(mpfr_init2,mpfr)
+if test "x$ac_cv_search_mpfr_init2" = "xno"; then
+  AC_MSG_ERROR([libmpfr not found])
 fi
 AC_SEARCH_LIBS(fmpz_init,flint)
 if test "x$ac_cv_search_fmpz_init" = "xno"; then
-   AC_MSG_ERROR([libflint not found])
+  AC_MSG_ERROR([libflint not found])
 fi
 
-AC_CONFIG_FILES([Makefile oz/Makefile dgsl/Makefile gghlite/Makefile applications/Makefile tests/Makefile])
-
-AC_CONFIG_SUBDIRS([dgs])
-
-# configure FLINT by hand because it doesn't support all options autotools might
-# throw at it
-
-dnl AC_ARG_VAR(FLINT, [If set to no then calling configure on FLINT is skipped])
-
-dnl if test "x$FLINT" != "xno"; then
-dnl    cd flint && ./configure --prefix=${prefix} && cd ..
-dnl fi   
+AC_CONFIG_FILES([Makefile oz/Makefile dgs/Makefile dgsl/Makefile gghlite/Makefile applications/Makefile tests/Makefile])
 
 AC_OUTPUT

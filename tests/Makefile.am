@@ -6,8 +6,7 @@ AM_LDFLAGS = -Wl,-rpath -Wl,$(top_builddir)/flint
 LDADD = $(top_builddir)/gghlite/libgghlite.la \
         $(top_builddir)/dgs/libdgs.la \
         $(top_builddir)/oz/liboz.la \
-        $(top_builddir)/dgsl/libdgsl.la \
-		-laesrand -lflint -lgmp -lmpfr -lm 
+        $(top_builddir)/dgsl/libdgsl.la
 
 #LDFLAGS = -no-install
 

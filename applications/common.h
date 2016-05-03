@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <gmp.h>
 #include <gghlite/gghlite-defs.h>
 
 #define DEFAULT_KAPPA    2
