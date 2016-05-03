@@ -1,5 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
-AM_CFLAGS = ${DEBUG_CFLAGS} -I$(top_srcdir) -I$(top_srcdir)/dgs -std=c99 -fopenmp
+AM_CFLAGS = ${DEBUG_CFLAGS} -I$(top_srcdir) -I$(top_srcdir)/dgs \
+            -std=c99 -D_DEFAULT_SOURCE -fopenmp
 
 lib_LTLIBRARIES = libdgsl.la
 
