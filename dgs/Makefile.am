@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS = foreign
-AM_CFLAGS=${DEBUG_CFLAGS}
+AM_CFLAGS=${DEBUG_CFLAGS} -std=c99
 
 lib_LTLIBRARIES = libdgs.la
 

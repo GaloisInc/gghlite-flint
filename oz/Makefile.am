@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = foreign -Wall
 
-AM_CFLAGS  = ${DEBUG_CFLAGS} -I$(top_srcdir) -fopenmp
+AM_CFLAGS  = ${DEBUG_CFLAGS} -I$(top_srcdir) -std=c99 -fopenmp
 
 lib_LTLIBRARIES=liboz.la
 
