@@ -78,5 +78,6 @@ void ggh_printf_v(const gghlite_params_t self, const char *msg, ...);
 */
 
 void ggh_printf(const gghlite_params_t self, const char *msg, ...);
+void ggh_fprintf(FILE *stream, const gghlite_params_t self, const char *msg, ...);
 
 #endif //MISC__H

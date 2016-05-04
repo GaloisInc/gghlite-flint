@@ -22,3 +22,13 @@ void ggh_printf(const gghlite_params_t self, const char *msg, ...) {
     fflush(0);
   }
 }
+
+void ggh_fprintf(FILE *stream, const gghlite_params_t self, const char *msg, ...) {
+  va_list lst;
+  if (!(self->flags & GGHLITE_FLAGS_QUIET)) {
+    va_start(lst, msg);
+    vfprintf(stream, msg, lst);
+    va_end(lst);
+    fflush(0);
+  }
+}
