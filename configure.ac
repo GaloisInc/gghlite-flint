@@ -39,13 +39,20 @@ AS_IF([test "$ac_cv_prog_cc_c99" = "no"], AC_MSG_ERROR([C99 support is required 
 AC_ARG_ENABLE(debug,        [  --enable-debug          Enable assert() statements for debugging.], [enable_debug=yes])
 AC_ARG_ENABLE(heuristics,   [  --enable-heuristics     Enable various heuristic improvements.], [enable_heuristics=yes])
 
-# Debugging support
+CFLAGS=                         dnl get rid of default -g -O2
+COMMON_CFLAGS="-Wall -Wformat -Wformat-security -Wextra -Wunused \
+-Wshadow -Wmissing-prototypes -Wfloat-equal -Wpointer-arith -Wcast-align \
+-Wstrict-prototypes -Wredundant-decls -Wendif-labels -Wcast-qual \
+-std=gnu11 -Wpedantic"
+
 if test "x$enable_debug" = x"yes"; then
-   DEBUG_FLAGS="-g"
-   AC_SUBST(DEBUG_FLAGS)
+  EXTRA_CFLAGS="-O0 -g"
 else
-   AC_DEFINE(NDEBUG,1,[Define whether debugging is enabled])
+  EXTRA_CFLAGS="-O3"
+  AC_DEFINE(NDEBUG,1,[Define whether debugging is enabled])
 fi
+AC_SUBST(COMMON_CFLAGS)
+AC_SUBST(EXTRA_CFLAGS)
 
 AX_VALGRIND_CHECK()
 
@@ -53,6 +60,8 @@ AX_VALGRIND_CHECK()
 if test "x$enable_heuristics" = x"yes"; then
    AC_DEFINE(GGHLITE_HEURISTICS,1,[Define whether to enable performance improvements])
 fi
+
+AC_CHECK_HEADERS([omp.h])
 
 AC_SEARCH_LIBS(mpz_urandomm_aes,aesrand)
 if test "x$ac_cv_search_mpz_urandomm_aes" = "xno"; then

@@ -1,6 +1,7 @@
 AUTOMAKE_OPTIONS = foreign
-AM_CFLAGS = ${DEBUG_CFLAGS} -I$(top_srcdir) -I$(top_srcdir)/dgs \
-            -std=c99 -D_DEFAULT_SOURCE -fopenmp
+AM_CFLAGS = $(COMMON_CFLAGS) $(EXTRA_CFLAGS) -I$(top_srcdir) -I$(top_srcdir)/dgs \
+            -D_DEFAULT_SOURCE -fopenmp
+AM_LDFLAGS = -lgomp
 
 lib_LTLIBRARIES = libgghlite.la
 
