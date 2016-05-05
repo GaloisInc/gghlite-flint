@@ -63,6 +63,10 @@ fi
 
 AC_CHECK_HEADERS([omp.h])
 
+AC_SEARCH_LIBS(aes_randinit,aesrand)
+if test "x$ac_cv_search_aes_randinit" = "xno"; then
+  AC_MSG_ERROR([libaesrand not found])
+fi
 AC_SEARCH_LIBS(mpz_urandomm_aes,aesrand)
 if test "x$ac_cv_search_mpz_urandomm_aes" = "xno"; then
   AC_MSG_ERROR([libaesrand not found])
