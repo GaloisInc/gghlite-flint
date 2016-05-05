@@ -51,7 +51,7 @@ int dgsl_mp_call_inlattice(fmpz *rop,  const dgsl_mp_t *self, aes_randstate_t st
   return 0;
 }
 
-int dgsl_mp_call_coset(fmpz *rop, const dgsl_mp_t *self, aes_randstate_t state) {
+static int dgsl_mp_call_coset(fmpz *rop, const dgsl_mp_t *self, aes_randstate_t state) {
   assert(rop); assert(self);
 
   const long n = fmpz_mat_ncols(self->B);

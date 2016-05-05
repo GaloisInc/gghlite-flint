@@ -2,7 +2,7 @@
 #include "ntt.h"
 #include "util.h"
 
-int _fmpz_nth_root(fmpz_t rop, const long n, const fmpz_t q) {
+static int _fmpz_nth_root(fmpz_t rop, const long n, const fmpz_t q) {
   if (fmpz_cmp_si(q, 2) == 0) {
     fmpz_set_ui(rop, 1);
     return 1;
@@ -47,7 +47,7 @@ int _fmpz_nth_root(fmpz_t rop, const long n, const fmpz_t q) {
   return 1;
 }
 
-void fmpz_mod_poly_oz_set_powers(fmpz_mod_poly_t op, const size_t n, const fmpz_t w) {
+static void fmpz_mod_poly_oz_set_powers(fmpz_mod_poly_t op, const size_t n, const fmpz_t w) {
   fmpz_mod_poly_realloc(op, n);
 
   fmpz_t acc; fmpz_init_set_ui(acc, 1);

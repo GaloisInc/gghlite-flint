@@ -14,9 +14,9 @@ void gghlite_params_initzero(gghlite_params_t self, size_t lambda, size_t kappa,
   memset(self->y, 0, gamma * sizeof(gghlite_enc_t));
 
   self->x = malloc(self->gamma * sizeof(gghlite_enc_t **));
-  for(int i = 0; i < self->gamma; i++) {
+  for(unsigned int i = 0; i < self->gamma; i++) {
     self->x[i] = malloc(self->kappa * sizeof(gghlite_enc_t *));
-    for(int j = 0; j < self->kappa; j++) {
+    for(unsigned int j = 0; j < self->kappa; j++) {
       self->x[i][j] = malloc(2 * sizeof(gghlite_enc_t));
       memset(self->x[i][j], 0, 2 * sizeof(gghlite_enc_t));
     }
@@ -581,8 +581,8 @@ void gghlite_params_clear(gghlite_params_t self) {
   fmpz_mod_poly_oz_ntt_precomp_clear(self->ntt);
   fmpz_clear(self->q);
 
-  for(int i = 0; i < self->gamma; i++) {
-    for(int j = 0; j < self->kappa; j++) {
+  for(unsigned int i = 0; i < self->gamma; i++) {
+    for(unsigned int j = 0; j < self->kappa; j++) {
       free(self->x[i][j]);
     }
     free(self->x[i]);

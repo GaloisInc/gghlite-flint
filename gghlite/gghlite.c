@@ -4,7 +4,7 @@
 #include "oz/oz.h"
 #include "oz/flint-addons.h"
 
-void _gghlite_zero(gghlite_sk_t self) {
+static void _gghlite_zero(gghlite_sk_t self) {
   memset(self, 0, sizeof(struct _gghlite_sk_struct));
 }
 
@@ -229,7 +229,7 @@ void _gghlite_sk_sample_g(gghlite_sk_t self, aes_randstate_t randstate) {
   const int check_prime = self->params->flags & GGHLITE_FLAGS_PRIME_G;
 
   int prime_pass = 0;
-  mp_limb_t *primes_s, *primes_p;
+  mp_limb_t *primes_s = NULL, *primes_p;
 
   const int nsp = _gghlite_nsmall_primes(self->params);
   primes_p = _fmpz_poly_oz_ideal_probable_prime_factors(self->params->n, nsp);
@@ -447,9 +447,9 @@ void gghlite_sk_init(gghlite_sk_t self, aes_randstate_t randstate) {
   self->a = malloc(self->params->gamma * sizeof(gghlite_enc_t));
   memset(self->a, 0, self->params->gamma * sizeof(gghlite_enc_t));
   self->b = malloc(self->params->gamma * sizeof(gghlite_enc_t **));
-  for(int i = 0; i < self->params->gamma; i++) {
+  for(unsigned int i = 0; i < self->params->gamma; i++) {
     self->b[i] = malloc(self->params->kappa * sizeof(gghlite_enc_t *));
-    for(int j = 0; j < self->params->kappa; j++) {
+    for(unsigned int j = 0; j < self->params->kappa; j++) {
       self->b[i][j] = malloc(2 * sizeof(gghlite_enc_t));
       memset(self->b[i][j], 0, 2 * sizeof(gghlite_enc_t));
     }
@@ -557,8 +557,8 @@ void gghlite_sk_clear(gghlite_sk_t self, int clear_params) {
   free(self->z_inv);
   free(self->a);
 
-  for(int i = 0; i < self->params->gamma; i++) {
-    for(int j = 0; j < self->params->kappa; j++) {
+  for(unsigned int i = 0; i < self->params->gamma; i++) {
+    for(unsigned int j = 0; j < self->params->kappa; j++) {
       free(self->b[i][j]);
     }
     free(self->b[i]);
@@ -685,27 +685,27 @@ void _gghlite_enc_extract_raw(gghlite_clr_t rop, const gghlite_params_t self, co
   fmpz_mod_poly_clear(t);
 }
 
-double gghlite_enc_size_symm(const gghlite_sk_t self, const gghlite_enc_t op, const size_t k) {
-  assert(gghlite_sk_is_symmetric(self));
+/* static double gghlite_enc_size_symm(const gghlite_sk_t self, const gghlite_enc_t op, const size_t k) { */
+/*   assert(gghlite_sk_is_symmetric(self)); */
 
-  fmpz_mod_poly_t t; fmpz_mod_poly_init2(t, fmpz_mod_poly_modulus(op), self->params->n);
-  fmpz_mod_poly_set(t, op);
+/*   fmpz_mod_poly_t t; fmpz_mod_poly_init2(t, fmpz_mod_poly_modulus(op), self->params->n); */
+/*   fmpz_mod_poly_set(t, op); */
 
-  for(size_t i=0; i<k; i++)
-    fmpz_mod_poly_oz_ntt_mul(t, self->z[0], t, self->params->n);
+/*   for(size_t i=0; i<k; i++) */
+/*     fmpz_mod_poly_oz_ntt_mul(t, self->z[0], t, self->params->n); */
 
-  fmpz_mod_poly_oz_ntt_dec(t, t, self->params->ntt);
+/*   fmpz_mod_poly_oz_ntt_dec(t, t, self->params->ntt); */
 
-  fmpz_poly_t z; fmpz_poly_init(z);
-  fmpz_poly_set_fmpz_mod_poly(z, t);
+/*   fmpz_poly_t z; fmpz_poly_init(z); */
+/*   fmpz_poly_set_fmpz_mod_poly(z, t); */
 
-  mpfr_t norm; mpfr_init2(norm, _gghlite_prec(self->params));
-  fmpz_poly_2norm_mpfr(norm, z, MPFR_RNDN);
-  mpfr_log2(norm, norm, MPFR_RNDN);
-  double r = mpfr_get_d(norm, MPFR_RNDN);
-  mpfr_clear(norm);
-  fmpz_poly_clear(z);
-  fmpz_mod_poly_clear(t);
+/*   mpfr_t norm; mpfr_init2(norm, _gghlite_prec(self->params)); */
+/*   fmpz_poly_2norm_mpfr(norm, z, MPFR_RNDN); */
+/*   mpfr_log2(norm, norm, MPFR_RNDN); */
+/*   double r = mpfr_get_d(norm, MPFR_RNDN); */
+/*   mpfr_clear(norm); */
+/*   fmpz_poly_clear(z); */
+/*   fmpz_mod_poly_clear(t); */
 
-  return r;
-}
+/*   return r; */
+/* } */

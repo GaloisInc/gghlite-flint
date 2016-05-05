@@ -22,10 +22,8 @@ void fmpz_mat_mul_modp(fmpz_mat_t a, fmpz_mat_t b, fmpz_mat_t c, int n,
 void fmpz_init_exp(fmpz_t exp, int base, int n);
 
 /* functions for computing matrix inverse mod fmpz_t */
-void fmpz_mat_modp(fmpz_mat_t m, int dim, fmpz_t p);
 void fmpz_mat_det_modp(fmpz_t det, fmpz_mat_t a, int n, fmpz_t p);
 void fmpz_mat_cofactor_modp(fmpz_mat_t b, fmpz_mat_t a, int n, fmpz_t p);
-void fmpz_modp_matrix_inverse(fmpz_mat_t inv, fmpz_mat_t a, int dim, fmpz_t p);
 
 static inline mp_limb_t n_prevprime(mp_limb_t n, int proved) {
   n--;

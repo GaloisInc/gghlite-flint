@@ -5,7 +5,7 @@
 #include "oz.h"
 #include "flint-addons.h"
 
-void _nmod_vec_oz_set_powers(mp_ptr op, const size_t n, const mp_limb_t w, const nmod_t q) {
+static void _nmod_vec_oz_set_powers(mp_ptr op, const size_t n, const mp_limb_t w, const nmod_t q) {
   mp_limb_t acc = 1;
   op[0] = 1;
   for(size_t i=1; i<n; i++) {
@@ -34,7 +34,7 @@ static const unsigned char bit_reverse_table_256[] =  {
 };
 
 
-void _nmod_vec_oz_ntt(mp_ptr rop, const mp_ptr op, const mp_ptr w, const size_t n, const nmod_t q) {
+static void _nmod_vec_oz_ntt(mp_ptr rop, const mp_ptr op, const mp_ptr w, const size_t n, const nmod_t q) {
   const size_t k = n_flog(n,2);
 
   mp_ptr a = _nmod_vec_init(n);
@@ -81,7 +81,7 @@ void _nmod_vec_oz_ntt(mp_ptr rop, const mp_ptr op, const mp_ptr w, const size_t 
 }
 
 
-mp_limb_t _nmod_vec_oz_resultant(const mp_ptr a, const long n, nmod_t q) {
+static mp_limb_t _nmod_vec_oz_resultant(const mp_ptr a, const long n, nmod_t q) {
   const mp_limb_t w_ = _nmod_nth_root(2*n, q.n);
   mp_ptr w = _nmod_vec_init(2*n);
   mp_ptr t = _nmod_vec_init(2*n);
@@ -148,7 +148,7 @@ void _fmpz_poly_oz_ideal_norm(fmpz_t norm, const fmpz_poly_t f, const long n) {
 
   for(i=0; i<num_threads; i++) {
     a[i] = _nmod_vec_init(2*n);
-    for(size_t j=0; j<2*n; j++)
+    for(long j=0; j<2*n; j++)
       a[i][j] = 0;
   }
 

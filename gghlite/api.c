@@ -71,8 +71,8 @@ void gghlite_enc_set_gghlite_clr(gghlite_enc_t rop, const gghlite_sk_t self, con
                                  aes_randstate_t randstate) {
 
   fmpz_poly_t t_o;  fmpz_poly_init(t_o);
-  const mp_bitcnt_t prec = (self->params->n/4 < 8192) ? 8192 : self->params->n/4;
-  const oz_flag_t flags = (self->params->flags & GGHLITE_FLAGS_VERBOSE) ? OZ_VERBOSE : 0;
+  /* const mp_bitcnt_t prec = (self->params->n/4 < 8192) ? 8192 : self->params->n/4; */
+  /* const oz_flag_t flags = (self->params->flags & GGHLITE_FLAGS_VERBOSE) ? OZ_VERBOSE : 0; */
   /* _fmpz_poly_oz_rem_small_iter(t_o, f, self->g, self->params->n, self->g_inv, prec, flags); */
   _fmpz_poly_oz_rem_small(t_o, f, self->g, self->params->n, self->g_inv);
 
@@ -89,7 +89,7 @@ void gghlite_enc_set_gghlite_clr(gghlite_enc_t rop, const gghlite_sk_t self, con
     if(!gghlite_sk_is_symmetric(self) && (k>1))
       ggh_die("Raising to higher levels than 1 not supported. Instead, multiply by the right combination of y_i.");
 
-		for (int r = 0; r < self->params->gamma; r++) {
+		for (unsigned int r = 0; r < self->params->gamma; r++) {
 			if (group[r]) {
 				if(gghlite_sk_is_symmetric(self)) {
 #pragma omp parallel for

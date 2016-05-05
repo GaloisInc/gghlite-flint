@@ -38,7 +38,7 @@ static inline double ggh_seconds(uint64_t t) {
   return t/1000000.0;
 }
 
-static inline void start_timer() {
+static inline void start_timer(void) {
   T = ggh_walltime(0);
 }
 
@@ -52,7 +52,7 @@ static inline void timer_printf(const char *msg, ...) {
   }
 }
 
-static inline void print_timer() {
+static inline void print_timer(void) {
   timer_printf("%8.2fs", ggh_seconds(ggh_walltime(T)));
 }
 

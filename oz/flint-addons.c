@@ -390,7 +390,7 @@ void fmpz_poly_resultant_modular_bound(fmpz_t res, const fmpz_poly_t poly1,
   }
 }
 
-void _fmpq_poly_resultant_modular_bound(fmpz_t rnum, fmpz_t rden,
+static void _fmpq_poly_resultant_modular_bound(fmpz_t rnum, fmpz_t rden,
                                   const fmpz *poly1, const fmpz_t den1, slong len1,
                                   const fmpz *poly2, const fmpz_t den2, slong len2,
                                   const mp_bitcnt_t bound) {
