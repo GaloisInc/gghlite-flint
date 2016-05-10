@@ -117,11 +117,14 @@ void _fmpz_poly_oz_rem_small_fmpz_split(fmpz_poly_t rem, const fmpz_t f, const f
     for(size_t j=0; j<num_threads; j++)
       fmpz_poly_set(t_[j], t);
 
-#pragma omp parallel for
-    for(size_t j=1; j<num_threads; j++)
+    /* XXX: causes libgomp resource overload */
+/* #pragma omp parallel for */
+    for(size_t j=1; j<num_threads; j++) {
       fmpz_poly_oz_mul(t_[j], t_[j], powb[j-1], n);
+    }
 
-#pragma omp parallel for
+    /* XXX: causes libgomp resource overload */
+/* #pragma omp parallel for */
     for(size_t j=0; j<num_threads; j++) {
       fmpz_set(H_[j], H);
       fmpz_fdiv_q_2exp(H_[j], H_[j], j*b);
@@ -129,7 +132,6 @@ void _fmpz_poly_oz_rem_small_fmpz_split(fmpz_poly_t rem, const fmpz_t f, const f
 
       _fmpz_poly_oz_rem_small_fmpz(f_[j], H_[j], g, n, g_inv, rem_bound); // f_j ~= H_j
       fmpz_poly_oz_mul(f_[j], t_[j], f_[j], n); // f_j ~= 2^(b*j) * H_j
-      flint_cleanup();
     }
 
     for(size_t j=0; j<num_threads; j++)

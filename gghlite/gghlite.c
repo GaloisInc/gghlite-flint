@@ -426,6 +426,7 @@ void _gghlite_sk_sample_z(gghlite_sk_t self, aes_randstate_t randstate) {
     progress_count_approx++;
     timer_printf("\r    Computation Progress (Parallel): [%lu / %lu] %8.2fs",
         progress_count_approx, bound, ggh_seconds(ggh_walltime(t)));
+    flint_cleanup();
   }
   timer_printf("\n");
 }

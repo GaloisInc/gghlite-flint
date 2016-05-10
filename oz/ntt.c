@@ -85,7 +85,8 @@ void _fmpz_mod_poly_oz_ntt(fmpz_mod_poly_t rop, const fmpz_mod_poly_t op, const 
   fmpz *b_hdl = b->coeffs;
 
   for(size_t i=0; i<k; i++) {
-#pragma omp parallel for
+    /* XXX: causes libgomp resource overload */
+/* #pragma omp parallel for */
     for(size_t j=0; j<n/2; j++) {
       fmpz_t tmp;  fmpz_init(tmp);
       const size_t tk  = (1UL<<(k-1-i));
@@ -100,7 +101,6 @@ void _fmpz_mod_poly_oz_ntt(fmpz_mod_poly_t rop, const fmpz_mod_poly_t op, const 
       if (fmpz_sgn(b_hdl + j + n/2) < 0)
         fmpz_add(b_hdl + j + n/2, b_hdl + j + n/2, q);
       fmpz_clear(tmp);
-      flint_cleanup();
     }
     if(i!=k-1) {
       fmpz *t = a_hdl;
@@ -200,7 +200,8 @@ void fmpz_mod_poly_oz_ntt_mul(fmpz_mod_poly_t h, const fmpz_mod_poly_t f, const 
   const fmpz *q = fmpz_mod_poly_modulus(f);
   fmpz_mod_poly_realloc(h, n);
 
-#pragma omp parallel for
+  /* XXX: causes libgomp resource overload */
+/* #pragma omp parallel for */
   for(size_t i=0; i<n; i++) {
     fmpz_mul(h->coeffs + i, f->coeffs + i, g->coeffs + i);
     fmpz_mod(h->coeffs + i, h->coeffs+i, q);
@@ -213,8 +214,10 @@ void fmpz_mod_poly_oz_ntt_inv(fmpz_mod_poly_t h, const fmpz_mod_poly_t f, const 
   fmpz_mod_poly_realloc(h, n);
 
 #pragma omp parallel for
-  for(size_t i=0; i<n; i++)
+  for(size_t i=0; i<n; i++) {
     fmpz_invmod(h->coeffs + i, f->coeffs + i, q);
+    flint_cleanup();
+  }
   h->length = n;
 }
 
@@ -247,7 +250,8 @@ void fmpz_mod_poly_oz_ntt_enc_fmpz_poly(fmpz_mod_poly_t rop, const fmpz_poly_t o
   fmpz_poly_t t; fmpz_poly_init2(t, precomp->n);
   fmpz_poly_set(t, op);
 
-#pragma omp parallel for
+  /* XXX: causes libgomp resource overload */
+/* #pragma omp parallel for */
   for(size_t i=0; i<precomp->n; i++) {
     fmpz_mul(rop->coeffs+i, precomp->phi->coeffs+i, t->coeffs+i);
     fmpz_mod(rop->coeffs+i, rop->coeffs+i, q);
@@ -265,6 +269,7 @@ void fmpz_mod_poly_oz_ntt_enc(fmpz_mod_poly_t rop, const fmpz_mod_poly_t op, con
   for(size_t i=0; i<precomp->n; i++) {
     fmpz_mul(rop->coeffs+i, precomp->phi->coeffs+i, op->coeffs+i);
     fmpz_mod(rop->coeffs+i, rop->coeffs+i, q);
+    flint_cleanup();
   }
   rop->length = precomp->n;
   _fmpz_mod_poly_oz_ntt(rop, rop, precomp->w, precomp->n);
@@ -279,6 +284,7 @@ void fmpz_mod_poly_oz_ntt_dec(fmpz_mod_poly_t rop, const fmpz_mod_poly_t op, con
   for(size_t i=0; i<precomp->n; i++) {
     fmpz_mul(rop->coeffs+i, precomp->phi_inv->coeffs+i, rop->coeffs+i);
     fmpz_mod(rop->coeffs+i, rop->coeffs+i, q);
+    flint_cleanup();
   }
 }
 

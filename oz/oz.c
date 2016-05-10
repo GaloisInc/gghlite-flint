@@ -205,6 +205,7 @@ int fmpz_poly_oz_ideal_span(const fmpz_poly_t g, const fmpz_poly_t b0, const fmp
       r1[j] = nmod_poly_resultant(n1[j], nm[j]);
       nmod_poly_clear(n0[j]);
       nmod_poly_clear(n1[j]);
+      flint_cleanup();
     }
     for(int j=0; j<num_threads; j++) {
       /* if both resultants are zero we're in a sub-ideal as g is expected to not to be divisible by
