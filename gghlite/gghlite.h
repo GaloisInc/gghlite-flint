@@ -52,13 +52,16 @@ void gghlite_params_initzero(gghlite_params_t self, size_t lambda, size_t kappa,
 
    @ingroup params
 */
-void gghlite_params_init_gamma(gghlite_params_t self, size_t lambda, size_t kappa, size_t gamma, uint64_t rerand_mask, gghlite_flag_t flags);
+void
+gghlite_params_init_gamma(gghlite_params_t self, size_t lambda, size_t kappa,
+                          size_t gamma, uint64_t rerand_mask, gghlite_flag_t flags);
 
-static inline void gghlite_params_init(gghlite_params_t self, size_t lambda, size_t kappa, uint64_t rerand_mask, gghlite_flag_t flags) {
+static inline void
+gghlite_params_init(gghlite_params_t self, size_t lambda, size_t kappa,
+                    uint64_t rerand_mask, gghlite_flag_t flags)
+{
 	gghlite_params_init_gamma(self, lambda, kappa, kappa, rerand_mask, flags);
 }
-
-
 
 /**
    @brief Generate parameters for GGHLite jigsaw puzzle instance requiring no randomness.
@@ -74,8 +77,10 @@ static inline void gghlite_params_init(gghlite_params_t self, size_t lambda, siz
    @ingroup params
 */
 
-
-static inline void gghlite_jigsaw_params_init(gghlite_params_t self, size_t lambda, size_t kappa, size_t gamma, gghlite_flag_t flags) {
+static inline void
+gghlite_jigsaw_params_init(gghlite_params_t self, size_t lambda, size_t kappa,
+                           size_t gamma, gghlite_flag_t flags)
+{
     gghlite_params_init_gamma(self, lambda, kappa, gamma, 0x0,
                               (gghlite_flag_t) ((int) flags | GGHLITE_FLAGS_ASYMMETRIC | GGHLITE_FLAGS_GOOD_G_INV));
 }
@@ -110,8 +115,10 @@ void gghlite_params_set_D_sigmas(gghlite_params_t params);
    @ingroup params
 */
 
-void gghlite_init(gghlite_sk_t self, const size_t lambda, const size_t kappa, const size_t gamma,
-                  const uint64_t rerand_mask, const gghlite_flag_t flags, aes_randstate_t randstate);
+void
+gghlite_init(gghlite_sk_t self, const size_t lambda, const size_t kappa,
+             const size_t gamma, const uint64_t rerand_mask,
+             const gghlite_flag_t flags, aes_randstate_t randstate);
 
 
 /**
@@ -127,15 +134,20 @@ void gghlite_init(gghlite_sk_t self, const size_t lambda, const size_t kappa, co
    @ingroup params
 */
 
-static inline void gghlite_jigsaw_init_gamma(gghlite_sk_t self, size_t lambda, size_t kappa, size_t gamma,
-                                       gghlite_flag_t flags, aes_randstate_t randstate) {
+static inline void
+gghlite_jigsaw_init_gamma(gghlite_sk_t self, size_t lambda, size_t kappa,
+                          size_t gamma, gghlite_flag_t flags,
+                          aes_randstate_t randstate)
+{
   gghlite_init(self, lambda, kappa, gamma, 0x0,
                (gghlite_flag_t) ((int) flags | GGHLITE_FLAGS_ASYMMETRIC | GGHLITE_FLAGS_GOOD_G_INV),
                randstate);
 }
 
-static inline void gghlite_jigsaw_init(gghlite_sk_t self, size_t lambda, size_t kappa,
-                                       gghlite_flag_t flags, aes_randstate_t randstate) {
+static inline void
+gghlite_jigsaw_init(gghlite_sk_t self, size_t lambda, size_t kappa,
+                    gghlite_flag_t flags, aes_randstate_t randstate)
+{
 	gghlite_jigsaw_init_gamma(self, lambda, kappa, kappa, flags, randstate);
 }
 
