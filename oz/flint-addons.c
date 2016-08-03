@@ -175,10 +175,14 @@ void fmpz_mat_cofactor_modp(fmpz_mat_t b, fmpz_mat_t a, int n, fmpz_t p) {
   fmpz_mat_clear(c);
 }
 
-void fmpz_modp_matrix_inverse(fmpz_mat_t inv, fmpz_mat_t a, int dim, fmpz_t p) {
+int fmpz_modp_matrix_inverse(fmpz_mat_t inv, fmpz_mat_t a, int dim, fmpz_t p) {
   fmpz_t det;
   fmpz_init(det);
   fmpz_mat_det_modp(det, a, dim, p);
+  if(0 == fmpz_sgn(det)) {
+    fmpz_clear(det);
+    return 1;
+  }
   fmpz_mat_t cofactor;
   fmpz_mat_init(cofactor, dim, dim);
   fmpz_mat_cofactor_modp(cofactor, a, dim, p);
@@ -201,6 +205,7 @@ void fmpz_modp_matrix_inverse(fmpz_mat_t inv, fmpz_mat_t a, int dim, fmpz_t p) {
 
   fmpz_clear(det);
   fmpz_mat_clear(cofactor);
+  return 0;
 }
 
 void _fmpz_vec_eucl_norm_mpfr(mpfr_t rop, const fmpz *vec, const long len, const mpfr_rnd_t rnd) {

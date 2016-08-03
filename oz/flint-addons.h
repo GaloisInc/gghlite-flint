@@ -14,7 +14,7 @@
 #include <math.h>
 
 /* functions dealing with fmpz types and matrix multiplications mod fmpz_t */
-void fmpz_modp_matrix_inverse(fmpz_mat_t inv, fmpz_mat_t a, int dim, fmpz_t p);
+int  fmpz_modp_matrix_inverse(fmpz_mat_t inv, fmpz_mat_t a, int dim, fmpz_t p);
 void fmpz_mat_modp(fmpz_mat_t m, int dim, fmpz_t p);
 void fmpz_mat_scalar_mul_modp(fmpz_mat_t m, fmpz_t scalar, fmpz_t modp);
 void fmpz_mat_mul_modp(fmpz_mat_t a, fmpz_mat_t b, fmpz_mat_t c, int n,
