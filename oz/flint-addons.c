@@ -187,21 +187,21 @@ int fmpz_modp_matrix_inverse(fmpz_mat_t inv, fmpz_mat_t a, int dim, fmpz_t p) {
   fmpz_mat_init(cofactor, dim, dim);
   fmpz_mat_cofactor_modp(cofactor, a, dim, p);
 
+  fmpz_t invmod;
+  fmpz_init(invmod);
+  fmpz_invmod(invmod, det, p);
+  fmpz_t tmp;
+  fmpz_init(tmp);
   for(int i = 0; i < dim; i++) {
     for(int j = 0; j < dim; j++) {
-      fmpz_t invmod;
-      fmpz_init(invmod);
-      fmpz_invmod(invmod, det, p);
-      fmpz_t tmp;
-      fmpz_init(tmp);
       fmpz_mod(tmp, fmpz_mat_entry(cofactor, j, i), p);
       fmpz_mul(tmp, tmp, invmod);
       fmpz_mod(tmp, tmp, p);
       fmpz_set(fmpz_mat_entry(inv,i,j), tmp);
-      fmpz_clear(invmod);
-      fmpz_clear(tmp);
     }
   }
+  fmpz_clear(tmp);
+  fmpz_clear(invmod);
 
   fmpz_clear(det);
   fmpz_mat_clear(cofactor);
