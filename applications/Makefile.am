@@ -12,7 +12,8 @@ LDADD = \
 
 #LDFLAGS = -no-install
 
-bin_PROGRAMS = bench_dgsl \
-               bench_prime_g \
-               bench_invert \
-               bench_rem
+bin_PROGRAMS =
+# bin_PROGRAMS = bench_dgsl \
+#                bench_prime_g \
+#                bench_invert \
+#                bench_rem
