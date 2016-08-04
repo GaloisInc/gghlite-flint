@@ -12,10 +12,7 @@ LDADD = \
 
 #LDFLAGS = -no-install
 
-bin_PROGRAMS = gghlite_instance \
-               bench_dgsl \
+bin_PROGRAMS = bench_dgsl \
                bench_prime_g \
-               bench_ideal_span \
                bench_invert \
-               bench_co_prime \
                bench_rem
