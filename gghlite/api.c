@@ -13,7 +13,7 @@ gghlite_enc_init(gghlite_enc_t op, const gghlite_params_t self)
 void
 gghlite_enc_set_gghlite_clr(gghlite_enc_t rop, const gghlite_sk_t self,
                             const gghlite_clr_t f, const size_t k, int *group,
-                            const int rerand, aes_randstate_t randstate)
+                            const int rerand)
 {
     fmpz_poly_t t_o; fmpz_poly_init(t_o);
     const mp_bitcnt_t prec = (self->params->n/4 < 8192) ? 8192 : self->params->n/4;
@@ -21,7 +21,7 @@ gghlite_enc_set_gghlite_clr(gghlite_enc_t rop, const gghlite_sk_t self,
     _fmpz_poly_oz_rem_small_iter(t_o, f, self->g, self->params->n, self->g_inv, prec, flags);
 
     if (rerand)
-        dgsl_rot_mp_call_plus_fmpz_poly(t_o, self->D_g, t_o, randstate);
+        dgsl_rot_mp_call_plus_fmpz_poly(t_o, self->D_g, t_o, *self->rng);
 
     // encode at level zero
     fmpz_mod_poly_oz_ntt_enc_fmpz_poly(rop, t_o, self->params->ntt);

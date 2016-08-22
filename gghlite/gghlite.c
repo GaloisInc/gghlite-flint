@@ -504,6 +504,8 @@ gghlite_sk_init(gghlite_sk_t self, aes_randstate_t randstate)
     print_timer();
     timer_printf("\n");
 
+    self->rng = randstate;
+
     /* gghlite_sk_print_times(self); */
 }
 

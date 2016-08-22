@@ -435,7 +435,7 @@ void gghlite_enc_sample(gghlite_enc_t rop, gghlite_params_t self, size_t k, size
 void
 gghlite_enc_set_gghlite_clr(gghlite_enc_t rop, const gghlite_sk_t self,
                             const gghlite_clr_t f, const size_t k, int *group,
-                            const int rerand, aes_randstate_t randstate);
+                            const int rerand);
 
 /**
    @brief Encode $f$ at level-$0$.
@@ -443,8 +443,6 @@ gghlite_enc_set_gghlite_clr(gghlite_enc_t rop, const gghlite_sk_t self,
    @param rop       initialised encoding, return value
    @param self      initialised GGHLite instance
    @param f         an element in $\\ZZ[x]/(x^n+1)$
-   @param randstate entropy source, assumes `flint_randinit(randstate)` and
-                    `_flint_rand_init_gmp(randstate)` was called
 
    @note If `self` is an asymmetric map only, then $k ≤ 1$ is required.
 
@@ -453,12 +451,12 @@ gghlite_enc_set_gghlite_clr(gghlite_enc_t rop, const gghlite_sk_t self,
 
 static inline void
 gghlite_enc_set_gghlite_clr0(gghlite_enc_t rop, const gghlite_sk_t self,
-                             const gghlite_clr_t f, aes_randstate_t randstate)
+                             const gghlite_clr_t f)
 {
 	int *group = (int *) malloc(self->params->gamma * sizeof(int));
 	memset(group, 0, self->params->gamma * sizeof(int));
 	group[0] = 1;
-    gghlite_enc_set_gghlite_clr(rop, self, f, 0, group, 0, randstate);
+    gghlite_enc_set_gghlite_clr(rop, self, f, 0, group, 0);
     free(group);
 }
 
