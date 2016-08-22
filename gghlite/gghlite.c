@@ -454,9 +454,10 @@ gghlite_sk_init(gghlite_sk_t self, aes_randstate_t randstate)
     assert(self->params->kappa);
     assert(self->params->gamma);
 
+    memcpy(self->rng, randstate, sizeof(aes_randstate_t));
+
     self->t_coprime = 0;
     self->t_is_prime = 0;
-    /* self->t_is_subideal = 0; */
     self->t_sample = 0;
 
     self->z     = calloc(self->params->gamma, sizeof(gghlite_enc_t));
@@ -503,10 +504,6 @@ gghlite_sk_init(gghlite_sk_t self, aes_randstate_t randstate)
     timer_printf("Finished setting pzt");
     print_timer();
     timer_printf("\n");
-
-    self->rng = randstate;
-
-    /* gghlite_sk_print_times(self); */
 }
 
 void

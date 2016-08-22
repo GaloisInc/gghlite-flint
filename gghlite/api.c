@@ -21,7 +21,7 @@ gghlite_enc_set_gghlite_clr(gghlite_enc_t rop, const gghlite_sk_t self,
     _fmpz_poly_oz_rem_small_iter(t_o, f, self->g, self->params->n, self->g_inv, prec, flags);
 
     if (rerand)
-        dgsl_rot_mp_call_plus_fmpz_poly(t_o, self->D_g, t_o, *self->rng);
+        dgsl_rot_mp_call_plus_fmpz_poly(t_o, self->D_g, t_o, self->rng);
 
     // encode at level zero
     fmpz_mod_poly_oz_ntt_enc_fmpz_poly(rop, t_o, self->params->ntt);
