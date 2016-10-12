@@ -121,6 +121,7 @@ mp_limb_t *_fmpz_poly_oz_ideal_small_prime_factors(const long n, const mp_limb_t
 }
 
 int fmpz_poly_oz_ideal_is_probaprime(const fmpz_poly_t f, const long n, int sloppy, const mp_limb_t *primes) {
+  (void) sloppy;
   int r = fmpz_poly_oz_ideal_not_prime_factors(f, n, primes);
   if (r) {
     fmpz_t norm;

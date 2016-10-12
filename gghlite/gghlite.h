@@ -491,6 +491,7 @@ static inline void
 gghlite_enc_add(gghlite_enc_t h, const gghlite_params_t self,
                 const gghlite_enc_t f, const gghlite_enc_t g)
 {
+    (void) self;
     fmpz_mod_poly_add(h, f, g);
 }
 
@@ -509,21 +510,9 @@ static inline void
 gghlite_enc_sub(gghlite_enc_t h, const gghlite_params_t self,
                 const gghlite_enc_t f, const gghlite_enc_t g)
 {
+    (void) self;
     fmpz_mod_poly_sub(h, f, g);
 }
-
-/**
-   @brief Extract canonical string from $f$
-
-   @param rop       initialised encoding, return value
-   @param self      initialised GGHLite `params`
-   @param f        valid encoding at level-$k$
-
-   @ingroup encodings
-*/
-
-/* void */
-/* gghlite_enc_extract(fmpz_poly_t rop, const gghlite_params_t self, const gghlite_enc_t f); */
 
 /**
    @brief Return 1 if $f$ is an encoding of zero at level $κ$
