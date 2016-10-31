@@ -561,12 +561,11 @@ gghlite_params_init_gamma(gghlite_params_t self, size_t lambda, size_t kappa,
                           size_t gamma, uint64_t rerand_mask,
                           gghlite_flag_t flags)
 {
-    assert(lambda > 0);
-    assert(kappa > 0);
-    assert(gamma > 0);
+    assert(lambda);
+    assert(kappa);
+    assert(gamma);
 
     gghlite_params_initzero(self, lambda, kappa, gamma);
-
     self->rerand_mask = rerand_mask;
     self->flags = flags;
 
@@ -579,7 +578,6 @@ gghlite_params_init_gamma(gghlite_params_t self, size_t lambda, size_t kappa,
         _gghlite_params_set_ell_g(self);
         _gghlite_params_set_ell(self);
         _gghlite_params_set_sigma_p(self);
-        /* _gghlite_params_set_ell_b(self); */
         _gghlite_params_set_sigma_s(self);
         _gghlite_params_set_q(self);
 

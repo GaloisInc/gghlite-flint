@@ -4,12 +4,6 @@
 #include "oz/oz.h"
 #include "oz/flint-addons.h"
 
-static void
-_gghlite_zero(gghlite_sk_t self)
-{
-    memset(self, 0, sizeof(struct _gghlite_sk_struct));
-}
-
 void
 gghlite_sk_set_D_g(gghlite_sk_t self)
 {
@@ -248,14 +242,14 @@ _gghlite_sk_sample_z(gghlite_sk_t self, aes_randstate_t randstate)
 #pragma omp parallel for
     for(size_t i = 0; i < bound; i++) {
         fmpz_mod_poly_oz_ntt_enc(self->z[i], self->z[i], self->params->ntt);
-
         fmpz_mod_poly_init(self->z_inv[i], self->params->q);
         fmpz_mod_poly_oz_ntt_inv(self->z_inv[i], self->z[i], self->params->n);
-    
-        progress_count_approx++;
-        timer_printf("\r    Computation Progress (Parallel): [%lu / %lu] %8.2fs",
-                     progress_count_approx, bound, ggh_seconds(ggh_walltime(t)));
-        flint_cleanup();
+#pragma omp critical
+        {
+            progress_count_approx++;
+            timer_printf("\r    Computation Progress (Parallel): [%lu / %lu] %8.2fs",
+                         progress_count_approx, bound, ggh_seconds(ggh_walltime(t)));
+        }
     }
     timer_printf("\n");
 }
@@ -267,7 +261,12 @@ gghlite_sk_init(gghlite_sk_t self, aes_randstate_t randstate)
     assert(self->params->kappa);
     assert(self->params->gamma);
 
-    memcpy(self->rng, randstate, sizeof(aes_randstate_t));
+    {
+        size_t nbytes;
+        unsigned char *buf = random_aes(randstate, 128, &nbytes);
+        aes_randinit_seedn(self->rng, (char *) buf, nbytes, NULL, 0);
+        free(buf);
+    }
 
     self->t_coprime = 0;
     self->t_is_prime = 0;
@@ -324,9 +323,8 @@ gghlite_init(gghlite_sk_t self, const size_t lambda, const size_t kappa,
              const size_t gamma, const uint64_t rerand_mask,
              const gghlite_flag_t flags, aes_randstate_t randstate)
 {
-    _gghlite_zero(self);
+    memset(self, 0, sizeof(struct _gghlite_sk_struct));
     gghlite_params_init_gamma(self->params, lambda, kappa, gamma, rerand_mask, flags);
-  
     gghlite_sk_init(self, randstate);
 }
 
