@@ -57,7 +57,7 @@ int test_jigsaw_indices(const size_t lambda, const size_t kappa, const size_t ga
 				group[j] = 1;
 			}
 		}
-        gghlite_enc_set_gghlite_clr(u[k], self, e[k], 1, group, 1, randstate);
+        gghlite_enc_set_gghlite_clr(u[k], self, e[k], 1, group, 1);
         gghlite_enc_mul(left, self->params, left, u[k]);
     }
 
@@ -67,7 +67,7 @@ int test_jigsaw_indices(const size_t lambda, const size_t kappa, const size_t ga
 
     fmpz_poly_t tmp; fmpz_poly_init(tmp);
     fmpz_poly_set_coeff_fmpz(tmp, 0, acc);
-    gghlite_enc_set_gghlite_clr0(rght, self, tmp, randstate);
+    gghlite_enc_set_gghlite_clr0(rght, self, tmp);
 
     for(size_t k=0; k<gamma; k++) {
         gghlite_enc_mul(rght, self->params, rght, self->z_inv[k]);
@@ -140,7 +140,7 @@ int test_jigsaw(const size_t lambda, const size_t kappa, int symmetric, aes_rand
 		int group[GAMMA];
 		memset(group, 0, GAMMA * sizeof(int));
 		group[i] = 1;
-        gghlite_enc_set_gghlite_clr(u[k], self, e[k], 1, group, 1, randstate);
+        gghlite_enc_set_gghlite_clr(u[k], self, e[k], 1, group, 1);
         gghlite_enc_mul(left, self->params, left, u[k]);
     }
 
@@ -150,7 +150,7 @@ int test_jigsaw(const size_t lambda, const size_t kappa, int symmetric, aes_rand
 
     fmpz_poly_t tmp; fmpz_poly_init(tmp);
     fmpz_poly_set_coeff_fmpz(tmp, 0, acc);
-    gghlite_enc_set_gghlite_clr0(rght, self, tmp, randstate);
+    gghlite_enc_set_gghlite_clr0(rght, self, tmp);
 
     for(size_t k=0; k<kappa; k++) {
         const int i = (gghlite_sk_is_symmetric(self)) ? 0 : k;
