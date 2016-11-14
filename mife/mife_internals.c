@@ -515,6 +515,7 @@ void fmpz_mat_cofactor_modp(fmpz_mat_t b, fmpz_mat_t a, int n, fmpz_t p) {
 void fmpz_modp_matrix_inverse(fmpz_mat_t inv, fmpz_mat_t a, int dim, fmpz_t p) {
   fmpz_t det;
   fmpz_init(det);
+  /* TODO: check if the determinant is zero */
   fmpz_mat_det_modp(det, a, dim, p);
   fmpz_mat_t cofactor;
   fmpz_mat_init(cofactor, dim, dim);
