@@ -104,7 +104,7 @@ dgs_disc_gauss_dp_t *dgs_disc_gauss_dp_init(double sigma, double c, size_t tau, 
         dgs_disc_gauss_dp_clear(self);
         dgs_die("out of memory");
       }
-      for(unsigned long x=0; x<self->upper_bound; x++) {
+      for(long x=0; x<self->upper_bound; x++) {
         self->rho[x] = exp( (((double)x) - self->c_r) * (((double)x) - self->c_r) * self->f);
       }
       self->rho[0]/= 2.0;

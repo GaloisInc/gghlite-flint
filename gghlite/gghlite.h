@@ -52,13 +52,16 @@ void gghlite_params_initzero(gghlite_params_t self, size_t lambda, size_t kappa,
 
    @ingroup params
 */
-void gghlite_params_init_gamma(gghlite_params_t self, size_t lambda, size_t kappa, size_t gamma, uint64_t rerand_mask, gghlite_flag_t flags);
+void
+gghlite_params_init_gamma(gghlite_params_t self, size_t lambda, size_t kappa,
+                          size_t gamma, uint64_t rerand_mask, gghlite_flag_t flags);
 
-static inline void gghlite_params_init(gghlite_params_t self, size_t lambda, size_t kappa, uint64_t rerand_mask, gghlite_flag_t flags) {
+static inline void
+gghlite_params_init(gghlite_params_t self, size_t lambda, size_t kappa,
+                    uint64_t rerand_mask, gghlite_flag_t flags)
+{
 	gghlite_params_init_gamma(self, lambda, kappa, kappa, rerand_mask, flags);
 }
-
-
 
 /**
    @brief Generate parameters for GGHLite jigsaw puzzle instance requiring no randomness.
@@ -74,8 +77,10 @@ static inline void gghlite_params_init(gghlite_params_t self, size_t lambda, siz
    @ingroup params
 */
 
-
-static inline void gghlite_jigsaw_params_init(gghlite_params_t self, size_t lambda, size_t kappa, size_t gamma, gghlite_flag_t flags) {
+static inline void
+gghlite_jigsaw_params_init(gghlite_params_t self, size_t lambda, size_t kappa,
+                           size_t gamma, gghlite_flag_t flags)
+{
     gghlite_params_init_gamma(self, lambda, kappa, gamma, 0x0,
                               (gghlite_flag_t) ((int) flags | GGHLITE_FLAGS_ASYMMETRIC | GGHLITE_FLAGS_GOOD_G_INV));
 }
@@ -92,8 +97,9 @@ static inline void gghlite_jigsaw_params_init(gghlite_params_t self, size_t lamb
 
 void gghlite_sk_init(gghlite_sk_t self, aes_randstate_t randstate);
 
+void
+gghlite_sk_set_D_g(gghlite_sk_t self);
 
-void gghlite_sk_set_D_g(gghlite_sk_t self);
 void gghlite_params_set_D_sigmas(gghlite_params_t params);
 
 /**
@@ -110,8 +116,10 @@ void gghlite_params_set_D_sigmas(gghlite_params_t params);
    @ingroup params
 */
 
-void gghlite_init(gghlite_sk_t self, const size_t lambda, const size_t kappa, const size_t gamma,
-                  const uint64_t rerand_mask, const gghlite_flag_t flags, aes_randstate_t randstate);
+void
+gghlite_init(gghlite_sk_t self, const size_t lambda, const size_t kappa,
+             const size_t gamma, const uint64_t rerand_mask,
+             const gghlite_flag_t flags, aes_randstate_t randstate);
 
 
 /**
@@ -127,15 +135,20 @@ void gghlite_init(gghlite_sk_t self, const size_t lambda, const size_t kappa, co
    @ingroup params
 */
 
-static inline void gghlite_jigsaw_init_gamma(gghlite_sk_t self, size_t lambda, size_t kappa, size_t gamma,
-                                       gghlite_flag_t flags, aes_randstate_t randstate) {
+static inline void
+gghlite_jigsaw_init_gamma(gghlite_sk_t self, size_t lambda, size_t kappa,
+                          size_t gamma, gghlite_flag_t flags,
+                          aes_randstate_t randstate)
+{
   gghlite_init(self, lambda, kappa, gamma, 0x0,
                (gghlite_flag_t) ((int) flags | GGHLITE_FLAGS_ASYMMETRIC | GGHLITE_FLAGS_GOOD_G_INV),
                randstate);
 }
 
-static inline void gghlite_jigsaw_init(gghlite_sk_t self, size_t lambda, size_t kappa,
-                                       gghlite_flag_t flags, aes_randstate_t randstate) {
+static inline void
+gghlite_jigsaw_init(gghlite_sk_t self, size_t lambda, size_t kappa,
+                    gghlite_flag_t flags, aes_randstate_t randstate)
+{
 	gghlite_jigsaw_init_gamma(self, lambda, kappa, kappa, flags, randstate);
 }
 
@@ -226,7 +239,7 @@ double gghlite_params_get_delta_0(const gghlite_params_t self);
    @ingroup params
 */
 
-int gghlite_params_check_sec(const gghlite_params_t self);
+/* int gghlite_params_check_sec(const gghlite_params_t self); */
 
 /**
    @brief Return true if rerandomisation elements are available for $i+1$ level.
@@ -293,8 +306,8 @@ void gghlite_enc_init(gghlite_enc_t op, const gghlite_params_t self);
    @ingroup encodings
 */
 
-void gghlite_enc_rerand(gghlite_enc_t rop, const gghlite_params_t self, const gghlite_enc_t op,
-                        size_t k, size_t i, aes_randstate_t randstate);
+/* void gghlite_enc_rerand(gghlite_enc_t rop, const gghlite_params_t self, const gghlite_enc_t op, */
+/*                         size_t k, size_t i, aes_randstate_t randstate); */
 
 /**
    @brief Raise encoding at level $k$ to level $l$ and re-randomise if requested.
@@ -314,9 +327,9 @@ void gghlite_enc_rerand(gghlite_enc_t rop, const gghlite_params_t self, const gg
    @ingroup encodings
 */
 
-void gghlite_enc_raise(gghlite_enc_t rop, const gghlite_params_t self, const gghlite_enc_t op,
-                       size_t l, size_t k, size_t i,
-                       int rerand, aes_randstate_t randstate);
+/* void gghlite_enc_raise(gghlite_enc_t rop, const gghlite_params_t self, const gghlite_enc_t op, */
+/*                        size_t l, size_t k, size_t i, */
+/*                        int rerand, aes_randstate_t randstate); */
 
 /**
    @brief Raise an encoding at level $0$ to level $l$ in group $G_0$.
@@ -333,13 +346,13 @@ void gghlite_enc_raise(gghlite_enc_t rop, const gghlite_params_t self, const ggh
    @ingroup encodings
 */
 
-static inline void gghlite_enc_raise0(gghlite_enc_t rop, gghlite_params_t self, gghlite_enc_t op,
-                                      size_t l, aes_randstate_t randstate) {
+/* static inline void gghlite_enc_raise0(gghlite_enc_t rop, gghlite_params_t self, gghlite_enc_t op, */
+/*                                       size_t l, aes_randstate_t randstate) { */
 
-  // TODO: fix have_rerand API
-  int rerand = (gghlite_params_have_rerand(self, l-1)) ? 1 : 0;
-  gghlite_enc_raise(rop, self, op, l, 0, 0, rerand, randstate);
-}
+/*   // TODO: fix have_rerand API */
+/*   int rerand = (gghlite_params_have_rerand(self, l-1)) ? 1 : 0; */
+/*   gghlite_enc_raise(rop, self, op, l, 0, 0, rerand, randstate); */
+/* } */
 
 
 /**
@@ -357,13 +370,13 @@ static inline void gghlite_enc_raise0(gghlite_enc_t rop, gghlite_params_t self, 
    @ingroup encodings
 */
 
-static inline void gghlite_enc_set_ui(gghlite_enc_t op, unsigned long c, const gghlite_params_t self,
-                                      const size_t k, const size_t i, const int rerand,
-                                      aes_randstate_t randstate) {
-  fmpz_mod_poly_oz_ntt_set_ui(op, c, self->n);
-  if(k>0)
-    gghlite_enc_raise(op, self, op, k, 0, i, rerand, randstate);
-}
+/* static inline void gghlite_enc_set_ui(gghlite_enc_t op, unsigned long c, const gghlite_params_t self, */
+/*                                       const size_t k, const size_t i, const int rerand, */
+/*                                       aes_randstate_t randstate) { */
+/*   fmpz_mod_poly_oz_ntt_set_ui(op, c, self->n); */
+/*   if(k>0) */
+/*     gghlite_enc_raise(op, self, op, k, 0, i, rerand, randstate); */
+/* } */
 
 /**
    @brief Set `op` to an encoding of `c` at level 0.
@@ -419,10 +432,10 @@ void gghlite_enc_sample(gghlite_enc_t rop, gghlite_params_t self, size_t k, size
    @ingroup encodings
 */
 
-void gghlite_enc_set_gghlite_clr(gghlite_enc_t rop, const gghlite_sk_t self, const gghlite_clr_t f,
-                                 const size_t k, int *group, const int rerand,
-                                 aes_randstate_t randstate);
-
+void
+gghlite_enc_set_gghlite_clr(gghlite_enc_t rop, const gghlite_sk_t self,
+                            const gghlite_clr_t f, const size_t k, int *group,
+                            const int rerand);
 
 /**
    @brief Encode $f$ at level-$0$.
@@ -430,21 +443,21 @@ void gghlite_enc_set_gghlite_clr(gghlite_enc_t rop, const gghlite_sk_t self, con
    @param rop       initialised encoding, return value
    @param self      initialised GGHLite instance
    @param f         an element in $\\ZZ[x]/(x^n+1)$
-   @param randstate entropy source, assumes `flint_randinit(randstate)` and
-                    `_flint_rand_init_gmp(randstate)` was called
 
    @note If `self` is an asymmetric map only, then $k ≤ 1$ is required.
 
    @ingroup encodings
 */
 
-static inline void gghlite_enc_set_gghlite_clr0(gghlite_enc_t rop, const gghlite_sk_t self, const gghlite_clr_t f,
-                                                aes_randstate_t randstate) {
+static inline void
+gghlite_enc_set_gghlite_clr0(gghlite_enc_t rop, const gghlite_sk_t self,
+                             const gghlite_clr_t f)
+{
 	int *group = (int *) malloc(self->params->gamma * sizeof(int));
 	memset(group, 0, self->params->gamma * sizeof(int));
 	group[0] = 1;
-  gghlite_enc_set_gghlite_clr(rop, self, f, 0, group, 0, randstate);
-  free(group);
+    gghlite_enc_set_gghlite_clr(rop, self, f, 0, group, 0);
+    free(group);
 }
 
 /**
@@ -456,8 +469,11 @@ static inline void gghlite_enc_set_gghlite_clr0(gghlite_enc_t rop, const gghlite
    @param g         valid encoding
 */
 
-static inline void gghlite_enc_mul(gghlite_enc_t h, const gghlite_params_t self, const gghlite_enc_t f, const gghlite_enc_t g) {
-  fmpz_mod_poly_oz_ntt_mul(h, f, g, self->n);
+static inline void
+gghlite_enc_mul(gghlite_enc_t h, const gghlite_params_t self,
+                const gghlite_enc_t f, const gghlite_enc_t g)
+{
+    fmpz_mod_poly_oz_ntt_mul(h, f, g, self->n);
 }
 
 /**
@@ -471,8 +487,12 @@ static inline void gghlite_enc_mul(gghlite_enc_t h, const gghlite_params_t self,
    @ingroup encodings
 */
 
-static inline void gghlite_enc_add(gghlite_enc_t h, const gghlite_params_t self, const gghlite_enc_t f, const gghlite_enc_t g) {
-  fmpz_mod_poly_add(h, f, g);
+static inline void
+gghlite_enc_add(gghlite_enc_t h, const gghlite_params_t self,
+                const gghlite_enc_t f, const gghlite_enc_t g)
+{
+    (void) self;
+    fmpz_mod_poly_add(h, f, g);
 }
 
 /**
@@ -486,21 +506,13 @@ static inline void gghlite_enc_add(gghlite_enc_t h, const gghlite_params_t self,
    @ingroup encodings
 */
 
-static inline void gghlite_enc_sub(gghlite_enc_t h, const gghlite_params_t self, const gghlite_enc_t f, const gghlite_enc_t g) {
-  fmpz_mod_poly_sub(h, f, g);
+static inline void
+gghlite_enc_sub(gghlite_enc_t h, const gghlite_params_t self,
+                const gghlite_enc_t f, const gghlite_enc_t g)
+{
+    (void) self;
+    fmpz_mod_poly_sub(h, f, g);
 }
-
-/**
-   @brief Extract canonical string from $f$
-
-   @param rop       initialised encoding, return value
-   @param self      initialised GGHLite `params`
-   @param f        valid encoding at level-$k$
-
-   @ingroup encodings
-*/
-
-void gghlite_enc_extract(fmpz_poly_t rop, const gghlite_params_t self, const gghlite_enc_t f);
 
 /**
    @brief Return 1 if $f$ is an encoding of zero at level $κ$
@@ -511,7 +523,8 @@ void gghlite_enc_extract(fmpz_poly_t rop, const gghlite_params_t self, const ggh
    @ingroup encodings
 */
 
-int gghlite_enc_is_zero(const gghlite_params_t self, const gghlite_enc_t op);
+int
+gghlite_enc_is_zero(const gghlite_params_t self, const gghlite_enc_t op);
 
 #ifdef __cplusplus
 }

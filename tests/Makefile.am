@@ -6,12 +6,9 @@ AM_LDFLAGS = -Wl,-rpath -Wl,$(top_builddir)/flint
 LDADD = $(top_builddir)/gghlite/libgghlite.la \
         $(top_builddir)/dgs/libdgs.la \
         $(top_builddir)/oz/liboz.la \
-        $(top_builddir)/dgsl/libdgsl.la \
-        $(top_builddir)/aesrand/libaesrand.la \
-        -L$(top_builddir)/flint/ -lflint \
-        -lgmp -lmpfr -lm 
+	    $(top_builddir)/dgsl/libdgsl.la -lgmp
 
-LDFLAGS = -no-install
+#LDFLAGS = -no-install
 
 TESTS = test_rem_small test_instgen test_jigsaw
 check_PROGRAMS = $(TESTS)

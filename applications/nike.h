@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include <gmp.h>
 #include <gghlite/gghlite-defs.h>
 
 struct _cmdline_params_struct{

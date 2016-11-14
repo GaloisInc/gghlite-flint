@@ -17,25 +17,29 @@
    @brief Check if $|g^{-1}| ≤ ℓ_g@
 */
 
-static inline int _gghlite_g_inv_check(const gghlite_params_t self, fmpq_poly_t g_inv) {
-  mpfr_t g_inv_norm;
-  mpfr_init2(g_inv_norm, mpfr_get_prec(self->ell_g));
-  fmpq_poly_2norm_mpfr(g_inv_norm, g_inv, MPFR_RNDN);
-  int r = (mpfr_cmp(g_inv_norm, self->ell_g) <= 0);
-  mpfr_clear(g_inv_norm);
-  return r;
+static inline int
+_gghlite_g_inv_check(const gghlite_params_t self, fmpq_poly_t g_inv)
+{
+    mpfr_t g_inv_norm;
+    mpfr_init2(g_inv_norm, mpfr_get_prec(self->ell_g));
+    fmpq_poly_2norm_mpfr(g_inv_norm, g_inv, MPFR_RNDN);
+    int r = (mpfr_cmp(g_inv_norm, self->ell_g) <= 0);
+    mpfr_clear(g_inv_norm);
+    return r;
 }
 
 /**
    @brief Return precision used for floating point computations.
 */
 
-static inline mpfr_prec_t _gghlite_prec(const gghlite_params_t self) {
-  const mpfr_prec_t prec = 2*self->lambda;
-  if (prec < 53)
-    return 53;
-  else
-    return prec;
+static inline mpfr_prec_t
+_gghlite_prec(const gghlite_params_t self)
+{
+    const mpfr_prec_t prec = 2*self->lambda;
+    if (prec < 53)
+        return 53;
+    else
+        return prec;
 }
 
 #ifndef GGHLITE_HEURISTICS
@@ -45,10 +49,10 @@ static inline mpfr_prec_t _gghlite_prec(const gghlite_params_t self) {
 */
 
 static inline double _gghlite_sigma(double n) {
-  const double e  = 2.71828182845905;
-  const double pi = 3.14159265358979;
-  const double sigma = 4*pi*n * sqrt(e*log(8*n)/pi);
-  return sigma;
+    const double e  = 2.71828182845905;
+    const double pi = 3.14159265358979;
+    const double sigma = 4*pi*n * sqrt(e*log(8*n)/pi);
+    return sigma;
 }
 
 /**
@@ -59,19 +63,19 @@ static inline double _gghlite_sigma(double n) {
    - @f$σ = 4·π·n·\sqrt{e·\log(8n)/π}/p_g@f$, cf. [LSS14]_ p.16.
 */
 
-void _gghlite_params_set_sigma(gghlite_params_t self);
+/* void _gghlite_params_set_sigma(gghlite_params_t self); */
 
 
 /**
-  Compute $ℓ_g$ in double precision.
+   Compute $ℓ_g$ in double precision.
 */
 
 static inline double _gghlite_ell_g(double n) {
-  const double e  = 2.71828182845905;
-  const double pi = 3.14159265358979;
-  const double sigma = _gghlite_sigma(n);
-  const double ell_g = 4*sqrt(pi*e*n)/(sigma);
-  return ell_g;
+    const double e  = 2.71828182845905;
+    const double pi = 3.14159265358979;
+    const double sigma = _gghlite_sigma(n);
+    const double ell_g = 4*sqrt(pi*e*n)/(sigma);
+    return ell_g;
 }
 
 #else
@@ -88,21 +92,21 @@ static inline double _gghlite_ell_g(double n) {
 */
 
 static inline double _gghlite_sigma(double n) {
-  const double pi = 3.14159265358979;
-  const double sigma = sqrt(2*pi*n);
-  return sigma;
+    const double pi = 3.14159265358979;
+    const double sigma = sqrt(2*pi*n);
+    return sigma;
 }
 
 void _gghlite_params_set_sigma(gghlite_params_t self);
 
 
 /**
-  Compute @f$ℓ_g@f$ in double precision.
+   Compute @f$ℓ_g@f$ in double precision.
 */
 
 static inline double _gghlite_ell_g(double n) {
-  const double ell_g = 1/sqrt(n);
-  return ell_g;
+    const double ell_g = 1/sqrt(n);
+    return ell_g;
 }
 
 #endif
@@ -113,135 +117,79 @@ static inline double _gghlite_ell_g(double n) {
 */
 
 static inline int _gghlite_nsmall_primes(const gghlite_params_t self) {
-  /* we try about 1% small primes first, where 1% relates to the total number of primes needed for
-     multi-modular result */
-  const long n = self->n;
-  int nsp = ceil((log2(_gghlite_sigma(n)) + log2(n)/2.0) * n/100.0/(FLINT_BITS -1));
-  if (nsp < 20)
-    nsp = 20;
-  return nsp;
+    /* we try about 1% small primes first, where 1% relates to the total number of primes needed for
+       multi-modular result */
+    const long n = self->n;
+    int nsp = ceil((log2(_gghlite_sigma(n)) + log2(n)/2.0) * n/100.0/(FLINT_BITS -1));
+    if (nsp < 20)
+        nsp = 20;
+    return nsp;
 }
-
-/**
-  Compute @f$ℓ_g@f$.
-
-  CONSTRAINTS:
-
-  - @f$ℓ_g = 4·\sqrt(π·e·n)/(p_g·σ)@f$, cf. [LSS14]_ p.16
-
-  @note We assume @f$p_g = 1@f$
-*/
-
-void _gghlite_params_set_ell_g(gghlite_params_t self);
 
 /**
    Compute @f$σ'@f$ in double precision.
 */
 
 static inline double _gghlite_sigma_p(double n) {
-  const double sigma = _gghlite_sigma(n);
-  const double e  = 2.71828182845905;
-  const double pi = 3.14159265358979;
-  const double sigma_p0 = 2.0 * pow(n, 1.5) * sigma * sqrt(e*log(8*n)/pi);
-  const double sigma_p1 = 7.0 * pow(n, 2.5) * pow(log(n), 1.5) * sigma;
+    const double sigma = _gghlite_sigma(n);
+    const double e  = 2.71828182845905;
+    const double pi = 3.14159265358979;
+    const double sigma_p0 = 2.0 * pow(n, 1.5) * sigma * sqrt(e*log(8*n)/pi);
+    const double sigma_p1 = 7.0 * pow(n, 2.5) * pow(log(n), 1.5) * sigma;
 
-  if (sigma_p1 > sigma_p0)
-    return sigma_p1;
-  else
-    return sigma_p0;
+    if (sigma_p1 > sigma_p0)
+        return sigma_p1;
+    else
+        return sigma_p0;
 }
-
-/**
-   Compute @f$σ'@f$.
-
-   CONSTRAINTS:
-
-   - @f$σ' ≥ 2n^{1.5}·σ\sqrt{e·\log(8n)/π}/p_b@f$, cf. [LSS14]_, Eq. (5), p.16
-   - @f$σ' ≥ 7n^{2.5}·ln(n)^{1.5}·σ@f$, cf. [LSS14]_, p.17
-*/
-
-void _gghlite_params_set_sigma_p(gghlite_params_t self);
-
-void _gghlite_params_set_D_sigma_p(gghlite_params_t self);
 
 /**
    Compute $ℓ_b$ in double precision.
 */
 
 static inline double _gghlite_ell_b(double n) {
-  const double sigma_p = _gghlite_sigma_p(n);
-  const double e  = 2.71828182845905;
-  const double pi = 3.14159265358979;
-  const double ell_b = 1.0/(2.0*sqrt(pi*e*n)) * sigma_p;
-  return ell_b;
+    const double sigma_p = _gghlite_sigma_p(n);
+    const double e  = 2.71828182845905;
+    const double pi = 3.14159265358979;
+    const double ell_b = 1.0/(2.0*sqrt(pi*e*n)) * sigma_p;
+    return ell_b;
 }
 
-/**
-   Compute $ℓ_b$.
+static inline double
+_gghlite_sigma_s(double n, double lambda, double kappa, const uint64_t rerand_mask)
+{
+    if(rerand_mask == 0)
+        return 1;
+    const double sigma_p = _gghlite_sigma_p(n);
+    const double pi = 3.14159265358979;
+    const double ell_g = _gghlite_ell_g(n);
+    const double ell_b = _gghlite_ell_b(n);
+    const double eps = log(lambda)/kappa;
 
-   CONSTRAINTS
+    const double sigma_s0 = pow(n, 1.5) * ell_g * sigma_p * sqrt(2*log(4*n/eps)/pi);
+    const double sigma_s1 = pow(n, 1.5) * pow(sigma_p, 2.0) * sqrt(8*pi/eps)/ell_b;
 
-   - @f$ℓ_b = p_b/(2\sqrt{π·e·n})·σ'@f$, cf. [LSS14]_, p.17
-
-   @note We assume $p_b = 1$
-*/
-
-void _gghlite_params_set_ell_b(gghlite_params_t self);
-
-static inline double _gghlite_sigma_s(double n, double lambda, double kappa, const uint64_t rerand_mask) {
-  if(rerand_mask == 0)
-    return 1;
-  const double sigma_p = _gghlite_sigma_p(n);
-  const double pi = 3.14159265358979;
-  const double ell_g = _gghlite_ell_g(n);
-  const double ell_b = _gghlite_ell_b(n);
-  const double eps = log(lambda)/kappa;
-
-  const double sigma_s0 = pow(n, 1.5) * ell_g * sigma_p * sqrt(2*log(4*n/eps)/pi);
-  const double sigma_s1 = pow(n, 1.5) * pow(sigma_p, 2.0) * sqrt(8*pi/eps)/ell_b;
-
-  if (sigma_s0 > sigma_s1)
-    return sigma_s0;
-  else
-    return sigma_s1;
+    if (sigma_s0 > sigma_s1)
+        return sigma_s0;
+    else
+        return sigma_s1;
 }
 
-/**
-   @brief Compute $σ^*$.
 
-   CONSTRAINTS:
-
-   - @f$σ^* ≥ n^{1.5}·ℓ_g·σ'·\sqrt{2·\log(4nε_ρ^{-1})/π}@f$, cf. [LSS14]_, p.17, Eq. (8)
-   - @f$σ^* ≥ n^{1.5}·(σ')²\sqrt{8πε_d^{-1}}/ℓ_b@f$, cf. [LSS14]_, p.17, Eq. (9) with
-   @f$εₑ^{-1} = O(\log λ/κ)@f$.
-*/
-
-void _gghlite_params_set_sigma_s(gghlite_params_t self);
-
-/**
-   @brief Init $D_{σ^*}$.
-*/
-
-void _gghlite_params_set_D_sigma_s(gghlite_params_t self);
-
-void _gghlite_params_set_q(gghlite_params_t self);
-
-static inline void _gghlite_params_get_q_mpfr(mpfr_t q, const gghlite_params_t self, mpfr_rnd_t rnd) {
-  assert(!fmpz_is_zero(self->q));
-  mpz_t qz;
-  mpz_init(qz);
-  fmpz_get_mpz(qz, self->q);
-  mpfr_set_z(q, qz, rnd);
-  mpz_clear(qz);
+static inline void
+_gghlite_params_get_q_mpfr(mpfr_t q, const gghlite_params_t self, mpfr_rnd_t rnd)
+{
+    assert(!fmpz_is_zero(self->q));
+    mpz_t qz;
+    mpz_init(qz);
+    fmpz_get_mpz(qz, self->q);
+    mpfr_set_z(q, qz, rnd);
+    mpz_clear(qz);
 }
-
-void _gghlite_params_set_ell(gghlite_params_t self);
-
-void _gghlite_sk_sample_g(gghlite_sk_t self, aes_randstate_t randstate);
 
 /**
    @brief Sample $z_i$ and $z_i^{-1}$.
- */
+*/
 
 void _gghlite_sk_sample_z(gghlite_sk_t self, aes_randstate_t randstate);
 
@@ -255,13 +203,13 @@ void _gghlite_sk_set_pzt(gghlite_sk_t self);
 
 /**
    @brief Set $c = (c⋅g)/z$ for some small $c$.
- */
+*/
 
 void _gghlite_sk_set_x(gghlite_sk_t self);
 
 /**
    @brief Set $y = (1 + c⋅g)/z$ for some small $c$ for each source group in rerand_mask.
- */
+*/
 
 void _gghlite_sk_set_y(gghlite_sk_t self);
 
@@ -291,14 +239,14 @@ extern double delta_from_k[MAX_K];
 */
 
 static inline long _gghlite_k_from_delta(const double delta_0) {
-  long k;
-  for(k=40; k<MAX_K; k++) {
-    if (delta_from_k[k] <= delta_0)
-      break;
-  }
-  if (k == MAX_K)
-    ggh_die("Cannot establish required block size");
-  return k;
+    long k;
+    for(k=40; k<MAX_K; k++) {
+        if (delta_from_k[k] <= delta_0)
+            break;
+    }
+    if (k == MAX_K)
+        ggh_die("Cannot establish required block size");
+    return k;
 }
 
 /**
@@ -312,7 +260,7 @@ static inline long _gghlite_k_from_delta(const double delta_0) {
 */
 
 static inline double _gghlite_repeat_from_n_k(const long n, const long k) {
-  return 3*log2(n)  - 2*log2(k) + log2(log2(n));
+    return 3*log2(n)  - 2*log2(k) + log2(log2(n));
 }
 
 /**
@@ -324,7 +272,7 @@ static inline double _gghlite_repeat_from_n_k(const long n, const long k) {
    Sam Scott, Cryptology ePrint Archive, Report 2015/046
 */
 
-double gghlite_params_cost_bkz_enum(const gghlite_params_t self);
+/* double gghlite_params_cost_bkz_enum(const gghlite_params_t self); */
 
 /**
    @brief Return expected cost of BKZ with SVP oracle implemented by sieving.
@@ -335,14 +283,14 @@ double gghlite_params_cost_bkz_enum(const gghlite_params_t self);
    Sam Scott, Cryptology ePrint Archive, Report 2015/046
 */
 
-double gghlite_params_cost_bkz_sieve(const gghlite_params_t self);
+/* double gghlite_params_cost_bkz_sieve(const gghlite_params_t self); */
 
 /**
    @brief Return true if self represents a symmetric graded encoding scheme.
 */
 
 static inline int gghlite_sk_is_symmetric(const gghlite_sk_t self) {
-  return !(self->params->flags & GGHLITE_FLAGS_ASYMMETRIC);
+    return !(self->params->flags & GGHLITE_FLAGS_ASYMMETRIC);
 }
 
 /**

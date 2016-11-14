@@ -3,7 +3,7 @@
 #include "util.h"
 #include "flint-addons.h"
 
-int _fmpq_poly_oz_sqrt_approx_break(mpfr_t norm, const fmpq_poly_t f_sqrt, const fmpq_poly_t f, const long n, const mpfr_prec_t bound, const mpfr_prec_t prec) {
+static int _fmpq_poly_oz_sqrt_approx_break(mpfr_t norm, const fmpq_poly_t f_sqrt, const fmpq_poly_t f, const long n, const mpfr_prec_t bound, const mpfr_prec_t prec) {
   fmpq_poly_t f_approx;
   fmpq_poly_init(f_approx);
   fmpq_poly_oz_mul(f_approx, f_sqrt, f_sqrt, n);
@@ -23,7 +23,7 @@ int _fmpq_poly_oz_sqrt_approx_break(mpfr_t norm, const fmpq_poly_t f_sqrt, const
   return r;
 }
 
-void _fmpq_poly_oz_sqrt_approx_scale(fmpq_poly_t y, fmpq_poly_t z, const long n, const mpfr_prec_t prec) {
+static void _fmpq_poly_oz_sqrt_approx_scale(fmpq_poly_t y, fmpq_poly_t z, const long n, const mpfr_prec_t prec) {
   /* We scale by about |det(y) · det(z)|^(-1/(2n)) to make it converge faster */
   mpfr_t gamma;
   mpfr_init2(gamma, prec);

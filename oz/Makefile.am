@@ -1,15 +1,16 @@
 AUTOMAKE_OPTIONS = foreign -Wall
 
-AM_CFLAGS  = ${DEBUG_CFLAGS} -I$(top_srcdir) -fopenmp
+AM_CFLAGS  = $(COMMON_CFLAGS) $(EXTRA_CFLAGS) -I$(top_srcdir) -fopenmp
+AM_LDFLAGS = -lgomp
 
 lib_LTLIBRARIES=liboz.la
 
-MY_LIB_LDFLAGS=-release 0.0.$(RELEASE) -no-undefined
-
 liboz_la_SOURCES = oz.c flint-addons.c util.c sqrt.c invert.c mul.c ntt.c norm.c rem.c
-liboz_la_LDFLAGS = $(MY_LIB_LDFLAGS)
-liboz_la_INCLUDEDOR = $(includedir)/oz
-liboz_la_LIBADD = -L$(top_builddir)/flint -lflint -lgmp -lmpfr -lm -lgomp
+liboz_la_LDFLAGS = -version-info $(OZ_VERSION_INFO) -no-undefined
+liboz_la_INCLUDEDIR = $(includedir)/oz
+liboz_la_LIBADD = -lgomp
 
-include_HEADERS = oz.h flint-addons.h sqrt.h invert.h mul.h
+pkgincludesubdir = $(includedir)/oz
+pkgincludesub_HEADERS = oz.h flags.h flint-addons.h sqrt.h invert.h mul.h \
+	norm.h rem.h ntt.h
 noinst_HEADERS = util.h

@@ -1,12 +1,16 @@
 AUTOMAKE_OPTIONS = foreign
-AM_CFLAGS = ${DEBUG_CFLAGS} -I$(top_srcdir) -I$(top_srcdir)/dgs -fopenmp
+AM_CFLAGS = $(COMMON_CFLAGS) $(EXTRA_CFLAGS) -I$(top_srcdir) -I$(top_srcdir)/dgs \
+            -D_DEFAULT_SOURCE -fopenmp
+AM_LDFLAGS = -lgomp
 
 lib_LTLIBRARIES = libgghlite.la
 
-include_HEADERS = gghlite.h \
-                  gghlite-defs.h \
-                  gghlite-internals.h \
-                  misc.h
+pkgincludesubdir = $(includedir)/gghlite
+
+include_HEADERS = gghlite.h
+pkgincludesub_HEADERS = config.h gghlite-defs.h \
+                        gghlite-internals.h \
+                        misc.h
 
 libgghlite_la_SOURCES = gghlite.c \
                         gghlite_pk.c \
@@ -17,11 +21,9 @@ libgghlite_la_SOURCES = gghlite.c \
                         ggh-defs.h \
                         ggh-internals.h \
                         api.c
-libgghlite_la_LIBADD = -lgmp -lmpfr \
-                       -L$(top_builddir)/flint/ -lflint \
-                       $(top_builddir)/oz/liboz.la \
+libgghlite_la_LIBADD = $(top_builddir)/oz/liboz.la \
                        $(top_builddir)/dgs/libdgs.la \
                        $(top_builddir)/dgsl/libdgsl.la
 
-libgghlite_la_LDFLAGS = -release 0.0.$(RELEASE) -no-undefined
+libgghlite_la_LDFLAGS = -version-info $(GGHLITE_VERSION_INFO) -no-undefined
 libgghlite_la_INCLUDEDIR = $(includedir)/gghlite

@@ -121,6 +121,7 @@ mp_limb_t *_fmpz_poly_oz_ideal_small_prime_factors(const long n, const mp_limb_t
 }
 
 int fmpz_poly_oz_ideal_is_probaprime(const fmpz_poly_t f, const long n, int sloppy, const mp_limb_t *primes) {
+  (void) sloppy;
   int r = fmpz_poly_oz_ideal_not_prime_factors(f, n, primes);
   if (r) {
     fmpz_t norm;
@@ -205,6 +206,7 @@ int fmpz_poly_oz_ideal_span(const fmpz_poly_t g, const fmpz_poly_t b0, const fmp
       r1[j] = nmod_poly_resultant(n1[j], nm[j]);
       nmod_poly_clear(n0[j]);
       nmod_poly_clear(n1[j]);
+      flint_cleanup();
     }
     for(int j=0; j<num_threads; j++) {
       /* if both resultants are zero we're in a sub-ideal as g is expected to not to be divisible by
